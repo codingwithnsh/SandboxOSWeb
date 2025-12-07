@@ -393,6 +393,153 @@ class SandboxManagerCore {
 // Create global sandbox manager instance
 const sandboxManager = new SandboxManagerCore();
 
+// Enhanced App Sandbox System - Run apps in isolated environments
+class AppSandbox {
+    constructor(appName, config = {}) {
+        this.appName = appName;
+        this.id = generateId();
+        this.iframe = null;
+        this.config = {
+            allowScripts: config.allowScripts !== false,
+            allowSameOrigin: config.allowSameOrigin || false,
+            allowForms: config.allowForms || false,
+            allowPopups: config.allowPopups || false,
+            ...config
+        };
+        this.messageHandlers = new Map();
+    }
+    
+    create(content) {
+        this.iframe = document.createElement('iframe');
+        
+        // Build sandbox permissions
+        const permissions = [];
+        if (this.config.allowScripts) permissions.push('allow-scripts');
+        if (this.config.allowSameOrigin) permissions.push('allow-same-origin');
+        if (this.config.allowForms) permissions.push('allow-forms');
+        if (this.config.allowPopups) permissions.push('allow-popups');
+        
+        this.iframe.sandbox = permissions.join(' ');
+        this.iframe.style.width = '100%';
+        this.iframe.style.height = '100%';
+        this.iframe.style.border = 'none';
+        
+        // Set up message handler
+        window.addEventListener('message', (event) => {
+            if (event.source === this.iframe.contentWindow) {
+                this.handleMessage(event.data);
+            }
+        });
+        
+        // Wrap content in a sandboxed HTML document
+        const sandboxedContent = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>${this.appName} - Sandboxed</title>
+                <style>
+                    body {
+                        margin: 0;
+                        padding: 0;
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        overflow: hidden;
+                    }
+                </style>
+            </head>
+            <body>
+                ${content}
+                <script>
+                    // Sandbox communication API
+                    window.sandboxAPI = {
+                        sendMessage: function(type, data) {
+                            window.parent.postMessage({ type, data, source: '${this.id}' }, '*');
+                        },
+                        onMessage: function(handler) {
+                            window.addEventListener('message', function(event) {
+                                if (event.data.target === '${this.id}') {
+                                    handler(event.data);
+                                }
+                            });
+                        }
+                    };
+                    
+                    // Notify parent that sandbox is ready
+                    window.sandboxAPI.sendMessage('ready', { appName: '${this.appName}' });
+                </script>
+            </body>
+            </html>
+        `;
+        
+        this.iframe.srcdoc = sandboxedContent;
+        return this.iframe;
+    }
+    
+    handleMessage(message) {
+        if (message.source === this.id) {
+            const handlers = this.messageHandlers.get(message.type) || [];
+            handlers.forEach(handler => handler(message.data));
+        }
+    }
+    
+    onMessage(type, handler) {
+        if (!this.messageHandlers.has(type)) {
+            this.messageHandlers.set(type, []);
+        }
+        this.messageHandlers.get(type).push(handler);
+    }
+    
+    sendMessage(type, data) {
+        if (this.iframe && this.iframe.contentWindow) {
+            this.iframe.contentWindow.postMessage({ type, data, target: this.id }, '*');
+        }
+    }
+    
+    destroy() {
+        if (this.iframe && this.iframe.parentNode) {
+            this.iframe.parentNode.removeChild(this.iframe);
+        }
+        this.iframe = null;
+        this.messageHandlers.clear();
+    }
+}
+
+// Helper function to run app in sandbox
+function runAppInSandbox(appName, content, windowConfig = {}) {
+    const sandbox = new AppSandbox(appName, {
+        allowScripts: true,
+        allowSameOrigin: false
+    });
+    
+    sandbox.onMessage('ready', (data) => {
+        console.log(`Sandbox ready for ${data.appName}`);
+        showNotification('Sandbox', `${data.appName} is running in isolated environment`);
+    });
+    
+    const iframe = sandbox.create(content);
+    
+    const windowId = windowManager.createWindow({
+        title: `${appName} (Sandboxed)`,
+        width: windowConfig.width || 800,
+        height: windowConfig.height || 600,
+        content: '<div id="sandbox-container" style="width: 100%; height: 100%;"></div>',
+        onClose: () => {
+            sandbox.destroy();
+        },
+        ...windowConfig
+    });
+    
+    setTimeout(() => {
+        const container = document.getElementById('sandbox-container');
+        if (container) {
+            container.appendChild(iframe);
+        }
+    }, 100);
+    
+    return { sandbox, windowId };
+}
+
 // Sandbox Manager UI Application
 function openSandboxManager() {
     const windowId = windowManager.createWindow({
