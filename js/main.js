@@ -222,6 +222,12 @@ function launchApp(appName) {
         case 'paint':
             openPaint();
             break;
+        case 'spotify':
+            openSpotify();
+            break;
+        case 'youtube':
+            openYouTube();
+            break;
         default:
             showNotification('App', `Opening ${appName}...`);
     }
