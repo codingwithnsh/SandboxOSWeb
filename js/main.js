@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateClock();
     setInterval(updateClock, 1000);
     
+    // Setup fullscreen
+    setupFullscreen();
+    
     // Show welcome notification
     setTimeout(() => {
         showNotification('Welcome to SandboxOS Web', 'Version 1.0 - Full-featured web operating system with sandboxing');
@@ -47,6 +50,15 @@ function setupMenuBar() {
         item.addEventListener('click', (e) => {
             const menu = e.target.dataset.menu;
             handleMenuClick(menu);
+        });
+        
+        // Add keyboard support
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const menu = e.target.dataset.menu;
+                handleMenuClick(menu);
+            }
         });
     });
 }
@@ -73,14 +85,41 @@ function setupDesktopIcons() {
     const icons = document.querySelectorAll('.desktop-icon');
     
     icons.forEach(icon => {
-        icon.addEventListener('click', () => {
-            const app = icon.dataset.app;
-            launchApp(app);
+        // Single click to select, double click to launch
+        let clickCount = 0;
+        let clickTimer = null;
+        
+        icon.addEventListener('click', (e) => {
+            clickCount++;
+            
+            if (clickCount === 1) {
+                // First click - select the icon
+                icons.forEach(i => i.classList.remove('selected'));
+                icon.classList.add('selected');
+                
+                clickTimer = setTimeout(() => {
+                    clickCount = 0;
+                }, 300);
+            } else if (clickCount === 2) {
+                // Double click - launch app
+                clearTimeout(clickTimer);
+                clickCount = 0;
+                const app = icon.dataset.app;
+                launchApp(app);
+            }
         });
         
-        icon.addEventListener('dblclick', () => {
-            const app = icon.dataset.app;
-            launchApp(app);
+        // Add keyboard accessibility
+        icon.setAttribute('tabindex', '0');
+        icon.setAttribute('role', 'button');
+        icon.setAttribute('aria-label', `Launch ${icon.querySelector('.label').textContent}`);
+        
+        icon.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const app = icon.dataset.app;
+                launchApp(app);
+            }
         });
     });
 }
@@ -93,6 +132,21 @@ function setupDock() {
         item.addEventListener('click', () => {
             const app = item.dataset.app;
             launchApp(app);
+        });
+        
+        // Add accessibility attributes
+        item.setAttribute('role', 'button');
+        item.setAttribute('tabindex', '0');
+        const appName = item.getAttribute('title');
+        item.setAttribute('aria-label', `Launch ${appName}`);
+        
+        // Add keyboard support
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const app = item.dataset.app;
+                launchApp(app);
+            }
         });
     });
 }
@@ -161,6 +215,12 @@ function launchApp(appName) {
             break;
         case 'trash':
             openTrash();
+            break;
+        case 'code-editor':
+            openCodeEditor();
+            break;
+        case 'paint':
+            openPaint();
             break;
         default:
             showNotification('App', `Opening ${appName}...`);
@@ -264,8 +324,75 @@ function showAboutDialog() {
     });
 }
 
+// Fullscreen functionality
+function setupFullscreen() {
+    // Add fullscreen button to menu bar
+    const menuRight = document.querySelector('.menu-right');
+    const fullscreenBtn = document.createElement('span');
+    fullscreenBtn.id = 'fullscreen-btn';
+    fullscreenBtn.className = 'menu-item';
+    fullscreenBtn.innerHTML = '⛶';
+    fullscreenBtn.title = 'Toggle Fullscreen (F11)';
+    fullscreenBtn.style.cursor = 'pointer';
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
+    menuRight.insertBefore(fullscreenBtn, menuRight.firstChild);
+    
+    // Listen for fullscreen changes
+    document.addEventListener('fullscreenchange', updateFullscreenButton);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+    document.addEventListener('mozfullscreenchange', updateFullscreenButton);
+    document.addEventListener('MSFullscreenChange', updateFullscreenButton);
+}
+
+function toggleFullscreen() {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement && 
+        !document.mozFullScreenElement && !document.msFullscreenElement) {
+        // Enter fullscreen
+        const elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) {
+            elem.webkitRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) {
+            elem.mozRequestFullScreen();
+        } else if (elem.msRequestFullscreen) {
+            elem.msRequestFullscreen();
+        }
+        showNotification('Fullscreen', 'Entered fullscreen mode. Press F11 or ESC to exit.');
+    } else {
+        // Exit fullscreen
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+        }
+        showNotification('Fullscreen', 'Exited fullscreen mode.');
+    }
+}
+
+function updateFullscreenButton() {
+    const btn = document.getElementById('fullscreen-btn');
+    if (btn) {
+        const isFullscreen = document.fullscreenElement || document.webkitFullscreenElement || 
+                           document.mozFullScreenElement || document.msFullscreenElement;
+        btn.innerHTML = isFullscreen ? '⛶' : '⛶';
+        btn.title = isFullscreen ? 'Exit Fullscreen (F11)' : 'Enter Fullscreen (F11)';
+        btn.style.opacity = isFullscreen ? '1' : '0.8';
+    }
+}
+
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
+    // F11 - Fullscreen
+    if (e.key === 'F11') {
+        e.preventDefault();
+        toggleFullscreen();
+    }
+    
     // Ctrl+Q - Quit (show message)
     if (e.ctrlKey && e.key === 'q') {
         e.preventDefault();

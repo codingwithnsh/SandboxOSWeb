@@ -40,7 +40,125 @@ class Sandbox {
             this.updateStats();
         }, 1000);
         
+        // Create a visual window for the sandbox
+        this.createSandboxWindow();
+        
         return true;
+    }
+    
+    createSandboxWindow() {
+        // Create a visual representation of the running sandbox
+        // Sanitize sandbox ID and name to prevent XSS
+        const safeId = this.id.replace(/[^a-zA-Z0-9-_]/g, '');
+        const safeName = this.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        
+        const windowId = windowManager.createWindow({
+            title: `🔒 Sandbox: ${safeName}`,
+            width: 800,
+            height: 600,
+            content: `
+                <div style="padding: 20px; height: 100%; display: flex; flex-direction: column;">
+                    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <h2 style="margin: 0 0 10px 0;">🔒 Isolated Sandbox Environment</h2>
+                        <p style="margin: 0; opacity: 0.9;">This is a secure, isolated environment. Actions here won't affect your main system.</p>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
+                        <div style="background: rgba(0,122,255,0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">CPU Usage</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-cpu-${safeId}">0%</div>
+                        </div>
+                        <div style="background: rgba(0,122,255,0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Memory</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-mem-${safeId}">0 MB</div>
+                        </div>
+                        <div style="background: rgba(0,122,255,0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Disk Usage</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-disk-${safeId}">0 MB</div>
+                        </div>
+                        <div style="background: rgba(0,122,255,0.1); padding: 15px; border-radius: 8px;">
+                            <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Uptime</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-uptime-${safeId}">0s</div>
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1; background: #1e1e1e; border-radius: 8px; padding: 15px; color: #00ff00; font-family: monospace; overflow-y: auto;" id="sandbox-console-${safeId}">
+                        <div>SandboxOS Terminal v1.0</div>
+                        <div>Type 'help' for available commands</div>
+                        <div style="margin-top: 10px;">sandbox@${safeName}:~$ <span style="animation: blink 1s infinite;">_</span></div>
+                    </div>
+                    
+                    <div style="margin-top: 15px; display: flex; gap: 10px;" data-sandbox-id="${safeId}">
+                        <button class="button" data-action="ls">📁 List Files</button>
+                        <button class="button" data-action="ps">📊 Processes</button>
+                        <button class="button" data-action="free">💾 Memory</button>
+                        <button class="button button-secondary" data-action="stop">⏹️ Stop Sandbox</button>
+                    </div>
+                </div>
+                <style>
+                    @keyframes blink {
+                        0%, 50% { opacity: 1; }
+                        51%, 100% { opacity: 0; }
+                    }
+                </style>
+            `,
+            onClose: () => {
+                this.stop();
+            }
+        });
+        
+        this.windowId = windowId;
+        
+        // Add event listeners for sandbox control buttons
+        setTimeout(() => {
+            const buttonContainer = document.querySelector(`[data-sandbox-id="${safeId}"]`);
+            if (buttonContainer) {
+                buttonContainer.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+                    
+                    const action = button.dataset.action;
+                    if (action === 'ls') {
+                        this.executeInWindow('ls -la');
+                    } else if (action === 'ps') {
+                        this.executeInWindow('ps aux');
+                    } else if (action === 'free') {
+                        this.executeInWindow('free -h');
+                    } else if (action === 'stop') {
+                        sandboxManager.stopSandbox(this.id);
+                    }
+                });
+            }
+        }, 100);
+        
+        // Update stats in the window
+        this.statsUpdateInterval = setInterval(() => {
+            const cpuEl = document.getElementById(`sandbox-cpu-${safeId}`);
+            const memEl = document.getElementById(`sandbox-mem-${safeId}`);
+            const diskEl = document.getElementById(`sandbox-disk-${safeId}`);
+            const uptimeEl = document.getElementById(`sandbox-uptime-${safeId}`);
+            
+            if (cpuEl) cpuEl.textContent = `${Math.round(this.stats.cpu)}%`;
+            if (memEl) memEl.textContent = `${Math.round(this.stats.memory)} MB`;
+            if (diskEl) diskEl.textContent = `${Math.round(this.stats.disk)} MB`;
+            if (uptimeEl) uptimeEl.textContent = `${this.stats.uptime}s`;
+        }, 1000);
+    }
+    
+    executeInWindow(command) {
+        const safeId = this.id.replace(/[^a-zA-Z0-9-_]/g, '');
+        const safeName = this.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        
+        const consoleEl = document.getElementById(`sandbox-console-${safeId}`);
+        if (consoleEl) {
+            const output = this.executeCommand(command);
+            const timestamp = new Date().toLocaleTimeString();
+            consoleEl.innerHTML += `\n<div style="margin-top: 5px; color: #888;">[${timestamp}]</div>`;
+            consoleEl.innerHTML += `\n<div>sandbox@${safeName}:~$ ${command}</div>`;
+            consoleEl.innerHTML += `\n<div style="color: #0ff;">${output}</div>`;
+            consoleEl.innerHTML += `\n<div style="margin-top: 5px;">sandbox@${safeName}:~$ <span style="animation: blink 1s infinite;">_</span></div>`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
     }
 
     stop() {
@@ -54,6 +172,15 @@ class Sandbox {
         
         if (this.updateStatsInterval) {
             clearInterval(this.updateStatsInterval);
+        }
+        
+        if (this.statsUpdateInterval) {
+            clearInterval(this.statsUpdateInterval);
+        }
+        
+        if (this.windowId) {
+            windowManager.closeWindow(this.windowId);
+            this.windowId = null;
         }
         
         this.stats = { cpu: 0, memory: 0, disk: 0, uptime: 0 };
@@ -88,7 +215,34 @@ class Sandbox {
 
     executeCommand(command) {
         // Simulate command execution in sandbox
-        return `Sandbox [${this.name}]: Executed command: ${command}`;
+        const responses = {
+            'ls -la': `total 48
+drwxr-xr-x 5 sandbox sandbox 4096 Dec  7 05:35 .
+drwxr-xr-x 3 root    root    4096 Dec  7 05:30 ..
+-rw-r--r-- 1 sandbox sandbox  220 Dec  7 05:30 .bash_logout
+-rw-r--r-- 1 sandbox sandbox 3526 Dec  7 05:30 .bashrc
+drwxr-xr-x 2 sandbox sandbox 4096 Dec  7 05:35 Documents
+drwxr-xr-x 2 sandbox sandbox 4096 Dec  7 05:35 Downloads
+-rw-r--r-- 1 sandbox sandbox  807 Dec  7 05:30 .profile
+drwxr-xr-x 2 sandbox sandbox 4096 Dec  7 05:35 Projects`,
+            'ps aux': `USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+sandbox      1  0.0  0.1  20084  3456 ?        Ss   05:35   0:00 /bin/bash
+sandbox     42  0.2  0.5  45892 12456 ?        S    05:36   0:01 node server.js
+sandbox     89  0.0  0.1  15640  2890 ?        R    05:37   0:00 ps aux`,
+            'free -h': `              total        used        free      shared  buff/cache   available
+Mem:          ${this.config.memoryLimit}Mi        ${Math.round(this.stats.memory)}Mi       ${Math.round(this.config.memoryLimit - this.stats.memory)}Mi        0.0Ki        64Mi       ${Math.round(this.config.memoryLimit - this.stats.memory)}Mi
+Swap:           0Mi          0Mi          0Mi`,
+            'help': `Available commands:
+  ls -la      - List files in current directory
+  ps aux      - Show running processes
+  free -h     - Display memory usage
+  help        - Show this help message
+  
+This is an isolated sandbox environment.
+All operations are contained and won't affect your main system.`
+        };
+        
+        return responses[command] || `Command '${command}' executed successfully in isolated environment.`;
     }
 }
 
