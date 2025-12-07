@@ -121,17 +121,6 @@ function setupDesktopIcons() {
                 launchApp(app);
             }
         });
-        
-        // Add hover effect for better feedback
-        icon.addEventListener('mouseenter', () => {
-            icon.style.transform = 'scale(1.05)';
-        });
-        
-        icon.addEventListener('mouseleave', () => {
-            if (!icon.classList.contains('selected')) {
-                icon.style.transform = 'scale(1)';
-            }
-        });
     });
 }
 
@@ -392,6 +381,7 @@ function updateFullscreenButton() {
                            document.mozFullScreenElement || document.msFullscreenElement;
         btn.innerHTML = isFullscreen ? '⛶' : '⛶';
         btn.title = isFullscreen ? 'Exit Fullscreen (F11)' : 'Enter Fullscreen (F11)';
+        btn.style.opacity = isFullscreen ? '1' : '0.8';
     }
 }
 

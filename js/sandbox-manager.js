@@ -48,8 +48,12 @@ class Sandbox {
     
     createSandboxWindow() {
         // Create a visual representation of the running sandbox
+        // Sanitize sandbox ID and name to prevent XSS
+        const safeId = this.id.replace(/[^a-zA-Z0-9-_]/g, '');
+        const safeName = this.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        
         const windowId = windowManager.createWindow({
-            title: `🔒 Sandbox: ${this.name}`,
+            title: `🔒 Sandbox: ${safeName}`,
             width: 800,
             height: 600,
             content: `
@@ -62,33 +66,33 @@ class Sandbox {
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
                         <div style="background: rgba(0,122,255,0.1); padding: 15px; border-radius: 8px;">
                             <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">CPU Usage</div>
-                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-cpu-${this.id}">0%</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-cpu-${safeId}">0%</div>
                         </div>
                         <div style="background: rgba(0,122,255,0.1); padding: 15px; border-radius: 8px;">
                             <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Memory</div>
-                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-mem-${this.id}">0 MB</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-mem-${safeId}">0 MB</div>
                         </div>
                         <div style="background: rgba(0,122,255,0.1); padding: 15px; border-radius: 8px;">
                             <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Disk Usage</div>
-                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-disk-${this.id}">0 MB</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-disk-${safeId}">0 MB</div>
                         </div>
                         <div style="background: rgba(0,122,255,0.1); padding: 15px; border-radius: 8px;">
                             <div style="font-size: 12px; opacity: 0.7; margin-bottom: 5px;">Uptime</div>
-                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-uptime-${this.id}">0s</div>
+                            <div style="font-size: 24px; font-weight: bold;" id="sandbox-uptime-${safeId}">0s</div>
                         </div>
                     </div>
                     
-                    <div style="flex: 1; background: #1e1e1e; border-radius: 8px; padding: 15px; color: #00ff00; font-family: monospace; overflow-y: auto;" id="sandbox-console-${this.id}">
+                    <div style="flex: 1; background: #1e1e1e; border-radius: 8px; padding: 15px; color: #00ff00; font-family: monospace; overflow-y: auto;" id="sandbox-console-${safeId}">
                         <div>SandboxOS Terminal v1.0</div>
                         <div>Type 'help' for available commands</div>
-                        <div style="margin-top: 10px;">sandbox@${this.name}:~$ <span style="animation: blink 1s infinite;">_</span></div>
+                        <div style="margin-top: 10px;">sandbox@${safeName}:~$ <span style="animation: blink 1s infinite;">_</span></div>
                     </div>
                     
-                    <div style="margin-top: 15px; display: flex; gap: 10px;">
-                        <button class="button" onclick="sandboxManager.getSandbox('${this.id}').executeInWindow('ls -la')">📁 List Files</button>
-                        <button class="button" onclick="sandboxManager.getSandbox('${this.id}').executeInWindow('ps aux')">📊 Processes</button>
-                        <button class="button" onclick="sandboxManager.getSandbox('${this.id}').executeInWindow('free -h')">💾 Memory</button>
-                        <button class="button button-secondary" onclick="sandboxManager.stopSandbox('${this.id}')">⏹️ Stop Sandbox</button>
+                    <div style="margin-top: 15px; display: flex; gap: 10px;" data-sandbox-id="${safeId}">
+                        <button class="button" data-action="ls">📁 List Files</button>
+                        <button class="button" data-action="ps">📊 Processes</button>
+                        <button class="button" data-action="free">💾 Memory</button>
+                        <button class="button button-secondary" data-action="stop">⏹️ Stop Sandbox</button>
                     </div>
                 </div>
                 <style>
@@ -105,12 +109,34 @@ class Sandbox {
         
         this.windowId = windowId;
         
+        // Add event listeners for sandbox control buttons
+        setTimeout(() => {
+            const buttonContainer = document.querySelector(`[data-sandbox-id="${safeId}"]`);
+            if (buttonContainer) {
+                buttonContainer.addEventListener('click', (e) => {
+                    const button = e.target.closest('button');
+                    if (!button) return;
+                    
+                    const action = button.dataset.action;
+                    if (action === 'ls') {
+                        this.executeInWindow('ls -la');
+                    } else if (action === 'ps') {
+                        this.executeInWindow('ps aux');
+                    } else if (action === 'free') {
+                        this.executeInWindow('free -h');
+                    } else if (action === 'stop') {
+                        sandboxManager.stopSandbox(this.id);
+                    }
+                });
+            }
+        }, 100);
+        
         // Update stats in the window
         this.statsUpdateInterval = setInterval(() => {
-            const cpuEl = document.getElementById(`sandbox-cpu-${this.id}`);
-            const memEl = document.getElementById(`sandbox-mem-${this.id}`);
-            const diskEl = document.getElementById(`sandbox-disk-${this.id}`);
-            const uptimeEl = document.getElementById(`sandbox-uptime-${this.id}`);
+            const cpuEl = document.getElementById(`sandbox-cpu-${safeId}`);
+            const memEl = document.getElementById(`sandbox-mem-${safeId}`);
+            const diskEl = document.getElementById(`sandbox-disk-${safeId}`);
+            const uptimeEl = document.getElementById(`sandbox-uptime-${safeId}`);
             
             if (cpuEl) cpuEl.textContent = `${Math.round(this.stats.cpu)}%`;
             if (memEl) memEl.textContent = `${Math.round(this.stats.memory)} MB`;
@@ -120,14 +146,17 @@ class Sandbox {
     }
     
     executeInWindow(command) {
-        const consoleEl = document.getElementById(`sandbox-console-${this.id}`);
+        const safeId = this.id.replace(/[^a-zA-Z0-9-_]/g, '');
+        const safeName = this.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        
+        const consoleEl = document.getElementById(`sandbox-console-${safeId}`);
         if (consoleEl) {
             const output = this.executeCommand(command);
             const timestamp = new Date().toLocaleTimeString();
             consoleEl.innerHTML += `\n<div style="margin-top: 5px; color: #888;">[${timestamp}]</div>`;
-            consoleEl.innerHTML += `\n<div>sandbox@${this.name}:~$ ${command}</div>`;
+            consoleEl.innerHTML += `\n<div>sandbox@${safeName}:~$ ${command}</div>`;
             consoleEl.innerHTML += `\n<div style="color: #0ff;">${output}</div>`;
-            consoleEl.innerHTML += `\n<div style="margin-top: 5px;">sandbox@${this.name}:~$ <span style="animation: blink 1s infinite;">_</span></div>`;
+            consoleEl.innerHTML += `\n<div style="margin-top: 5px;">sandbox@${safeName}:~$ <span style="animation: blink 1s infinite;">_</span></div>`;
             consoleEl.scrollTop = consoleEl.scrollHeight;
         }
     }

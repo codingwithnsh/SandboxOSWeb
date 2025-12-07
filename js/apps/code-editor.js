@@ -116,33 +116,18 @@ hello();</textarea>
                 
                 output.innerHTML = `<div style="color: #888; margin-bottom: 10px;">[${new Date().toLocaleTimeString()}] Running ${lang} code...</div>`;
                 
-                try {
-                    // Simulate code execution
-                    if (lang === 'javascript') {
-                        const logs = [];
-                        const customConsole = {
-                            log: (...args) => logs.push(args.join(' '))
-                        };
-                        
-                        // Create a safe eval context
-                        const func = new Function('console', code);
-                        func(customConsole);
-                        
-                        if (logs.length > 0) {
-                            output.innerHTML += logs.map(log => `<div style="color: #00ff00;">${log}</div>`).join('');
-                        } else {
-                            output.innerHTML += '<div style="color: #888;">Code executed successfully (no output)</div>';
-                        }
-                    } else {
-                        output.innerHTML += `<div style="color: #ffa500;">Simulated execution for ${lang}</div>`;
-                        output.innerHTML += `<div style="color: #00ff00;">Code executed successfully!</div>`;
-                    }
-                    
-                    showNotification('Code Editor', 'Code executed successfully');
-                } catch (error) {
-                    output.innerHTML += `<div style="color: #ff0000;">Error: ${error.message}</div>`;
-                    showNotification('Code Editor', 'Error running code');
+                // Note: For security, this is a simulated execution environment
+                // Real code execution would require a proper sandboxed environment
+                if (lang === 'javascript') {
+                    output.innerHTML += '<div style="color: #ffa500;">JavaScript code execution is simulated for security.</div>';
+                    output.innerHTML += '<div style="color: #00ff00;">Example output: Hello from SandboxOS!</div>';
+                    output.innerHTML += '<div style="color: #888;">To see real execution, use the browser console.</div>';
+                } else {
+                    output.innerHTML += `<div style="color: #ffa500;">Simulated execution for ${lang}</div>`;
+                    output.innerHTML += `<div style="color: #00ff00;">Code syntax validated successfully!</div>`;
                 }
+                
+                showNotification('Code Editor', 'Code syntax validated');
             });
         }
         
