@@ -51,7 +51,7 @@ function showSettingsSection(section) {
             <p>A comprehensive web-based operating system with sandboxing capabilities.</p>
             <p><strong>Features:</strong> 2500+</p>
             <p><strong>Platform:</strong> ${navigator.platform}</p>
-            <p><strong>User Agent:</strong> ${navigator.userAgent.substring(0, 100)}...</p>
+            <p><strong>Browser:</strong> ${getBrowserName()}</p>
         `;
     }
 }

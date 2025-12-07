@@ -28,9 +28,11 @@ class Sandbox {
         this.startTime = Date.now();
         
         // Create iframe for isolation
+        // Note: Using restrictive sandbox for security - only allows scripts
         this.iframe = document.createElement('iframe');
-        this.iframe.sandbox = 'allow-scripts allow-same-origin';
+        this.iframe.sandbox = 'allow-scripts';
         this.iframe.style.display = 'none';
+        this.iframe.srcdoc = '<!DOCTYPE html><html><head><title>Sandbox</title></head><body><p>Sandbox Environment</p></body></html>';
         document.body.appendChild(this.iframe);
         
         // Simulate resource usage

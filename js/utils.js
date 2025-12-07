@@ -2,7 +2,7 @@
 
 // Generate unique IDs
 function generateId() {
-    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    return `${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 }
 
 // Format file size
@@ -239,6 +239,16 @@ function loadImageFile() {
         
         input.click();
     });
+}
+
+// Get browser name safely
+function getBrowserName() {
+    const ua = navigator.userAgent;
+    if (ua.includes('Firefox')) return 'Firefox';
+    if (ua.includes('Chrome')) return 'Chrome';
+    if (ua.includes('Safari')) return 'Safari';
+    if (ua.includes('Edge')) return 'Edge';
+    return 'Unknown';
 }
 
 // Get system info
