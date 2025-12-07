@@ -1,0 +1,412 @@
+/* Sandbox Manager Styles */
+
+.sandbox-toolbar {
+    padding: 15px 20px;
+    background: var(--secondary-light);
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+body.dark-mode .sandbox-toolbar {
+    background: var(--secondary-dark);
+    border-bottom-color: #444;
+}
+
+.sandbox-layout {
+    display: flex;
+    height: calc(100% - 60px);
+}
+
+.sandbox-list-panel {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.sandbox-list-header {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.sandbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.sandbox-card {
+    background: var(--secondary-light);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+body.dark-mode .sandbox-card {
+    background: var(--secondary-dark);
+    border-color: #444;
+}
+
+.sandbox-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.sandbox-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.sandbox-card-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.sandbox-card-status {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.sandbox-card-status.running {
+    background: #28CA42;
+    color: white;
+}
+
+.sandbox-card-status.stopped {
+    background: #FF5F57;
+    color: white;
+}
+
+.sandbox-card-status.paused {
+    background: #FFBD2E;
+    color: white;
+}
+
+.sandbox-card-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+
+.sandbox-card-info-item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sandbox-card-controls {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.sandbox-control-btn {
+    padding: 6px 12px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: opacity 0.2s;
+}
+
+.sandbox-control-btn:hover {
+    opacity: 0.8;
+}
+
+.sandbox-control-btn.secondary {
+    background: var(--hover-light);
+    color: var(--text-light);
+}
+
+body.dark-mode .sandbox-control-btn.secondary {
+    background: var(--hover-dark);
+    color: var(--text-dark);
+}
+
+.sandbox-control-btn.danger {
+    background: #FF5F57;
+}
+
+.sandbox-details-panel {
+    width: 350px;
+    background: var(--secondary-light);
+    border-left: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+body.dark-mode .sandbox-details-panel {
+    background: var(--secondary-dark);
+    border-left-color: #444;
+}
+
+.sandbox-details-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.sandbox-details-section {
+    margin-bottom: 25px;
+}
+
+.sandbox-details-section-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    opacity: 0.7;
+}
+
+.sandbox-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sandbox-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sandbox-stat-label {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.sandbox-stat-bar {
+    height: 8px;
+    background: var(--hover-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+body.dark-mode .sandbox-stat-bar {
+    background: var(--hover-dark);
+}
+
+.sandbox-stat-fill {
+    height: 100%;
+    background: var(--accent-color);
+    transition: width 0.3s;
+}
+
+.sandbox-stat-value {
+    font-size: 12px;
+    text-align: right;
+}
+
+/* Sandbox Creation Dialog */
+.sandbox-create-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--secondary-light);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    width: 500px;
+    max-width: 90vw;
+    z-index: 10000;
+}
+
+body.dark-mode .sandbox-create-dialog {
+    background: var(--secondary-dark);
+}
+
+.sandbox-create-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+}
+
+.sandbox-create-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.sandbox-create-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.sandbox-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sandbox-form-label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.sandbox-form-input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+body.dark-mode .sandbox-form-input {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+    border-color: #444;
+}
+
+.sandbox-templates {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.sandbox-template {
+    padding: 15px;
+    background: var(--bg-light);
+    border: 2px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+body.dark-mode .sandbox-template {
+    background: var(--bg-dark);
+}
+
+.sandbox-template:hover {
+    border-color: var(--accent-color);
+}
+
+.sandbox-template.selected {
+    border-color: var(--accent-color);
+    background: rgba(0, 122, 255, 0.1);
+}
+
+.sandbox-template-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.sandbox-template-specs {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.sandbox-create-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+/* Sandbox Terminal */
+.sandbox-terminal {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #000;
+}
+
+.sandbox-terminal-header {
+    padding: 10px 15px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #333;
+    color: #0F0;
+    font-family: 'Courier New', monospace;
+}
+
+.sandbox-terminal-output {
+    flex: 1;
+    padding: 10px 15px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #0F0;
+}
+
+.sandbox-terminal-input-line {
+    display: flex;
+    padding: 10px 15px;
+    background: #0a0a0a;
+    border-top: 1px solid #333;
+}
+
+.sandbox-terminal-prompt {
+    color: #0F0;
+    margin-right: 8px;
+}
+
+.sandbox-terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #0F0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+/* Resource Monitor */
+.resource-monitor {
+    padding: 20px;
+}
+
+.resource-chart {
+    height: 200px;
+    margin-bottom: 20px;
+    background: var(--secondary-light);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+body.dark-mode .resource-chart {
+    background: var(--secondary-dark);
+}
+
+.resource-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.resource-metric {
+    padding: 15px;
+    background: var(--secondary-light);
+    border-radius: 8px;
+    text-align: center;
+}
+
+body.dark-mode .resource-metric {
+    background: var(--secondary-dark);
+}
+
+.resource-metric-value {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.resource-metric-label {
+    font-size: 13px;
+    opacity: 0.7;
+}

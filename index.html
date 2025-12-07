@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SandboxOS Web - Modern Operating System</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/apps.css">
+    <link rel="stylesheet" href="styles/sandbox.css">
+</head>
+<body>
+    <!-- Menu Bar -->
+    <div id="menu-bar" class="menu-bar">
+        <div class="menu-items">
+            <div class="menu-item" data-menu="os">SandboxOS</div>
+            <div class="menu-item" data-menu="file">File</div>
+            <div class="menu-item" data-menu="edit">Edit</div>
+            <div class="menu-item" data-menu="view">View</div>
+            <div class="menu-item" data-menu="go">Go</div>
+            <div class="menu-item" data-menu="window">Window</div>
+            <div class="menu-item" data-menu="tools">Tools</div>
+        </div>
+        <div class="menu-right">
+            <span id="menu-time" class="menu-time"></span>
+            <span id="menu-battery" class="menu-battery">🔋 100%</span>
+            <span id="menu-network" class="menu-network">🌐</span>
+        </div>
+    </div>
+
+    <!-- Desktop Area -->
+    <div id="desktop" class="desktop">
+        <!-- Desktop Icons -->
+        <div id="desktop-icons" class="desktop-icons">
+            <div class="desktop-icon" data-app="file-explorer">
+                <div class="icon">📁</div>
+                <div class="label">Files</div>
+            </div>
+            <div class="desktop-icon" data-app="text-editor">
+                <div class="icon">📝</div>
+                <div class="label">Text Editor</div>
+            </div>
+            <div class="desktop-icon" data-app="calculator">
+                <div class="icon">🧮</div>
+                <div class="label">Calculator</div>
+            </div>
+            <div class="desktop-icon" data-app="browser">
+                <div class="icon">🌐</div>
+                <div class="label">Browser</div>
+            </div>
+            <div class="desktop-icon" data-app="photos">
+                <div class="icon">🖼️</div>
+                <div class="label">Photos</div>
+            </div>
+            <div class="desktop-icon" data-app="music">
+                <div class="icon">🎵</div>
+                <div class="label">Music</div>
+            </div>
+            <div class="desktop-icon" data-app="videos">
+                <div class="icon">🎬</div>
+                <div class="label">Videos</div>
+            </div>
+            <div class="desktop-icon" data-app="email">
+                <div class="icon">📧</div>
+                <div class="label">Mail</div>
+            </div>
+            <div class="desktop-icon" data-app="calendar">
+                <div class="icon">📅</div>
+                <div class="label">Calendar</div>
+            </div>
+            <div class="desktop-icon" data-app="notes">
+                <div class="icon">📋</div>
+                <div class="label">Notes</div>
+            </div>
+            <div class="desktop-icon" data-app="settings">
+                <div class="icon">⚙️</div>
+                <div class="label">Settings</div>
+            </div>
+            <div class="desktop-icon" data-app="terminal">
+                <div class="icon">💻</div>
+                <div class="label">Terminal</div>
+            </div>
+            <div class="desktop-icon" data-app="sandbox-manager">
+                <div class="icon">🔒</div>
+                <div class="label">Sandboxes</div>
+            </div>
+            <div class="desktop-icon" data-app="launchpad">
+                <div class="icon">🚀</div>
+                <div class="label">Launchpad</div>
+            </div>
+            <div class="desktop-icon" data-app="app-store">
+                <div class="icon">🏪</div>
+                <div class="label">App Store</div>
+            </div>
+            <div class="desktop-icon" data-app="time-machine">
+                <div class="icon">⏰</div>
+                <div class="label">Time Machine</div>
+            </div>
+        </div>
+
+        <!-- Windows Container -->
+        <div id="windows-container"></div>
+    </div>
+
+    <!-- Status Bar -->
+    <div id="status-bar" class="status-bar">
+        <div class="status-left">
+            <span id="status-cpu">CPU: 0%</span>
+            <span id="status-ram">RAM: 0%</span>
+            <span id="status-disk">Disk: 0%</span>
+        </div>
+    </div>
+
+    <!-- Dock -->
+    <div id="dock" class="dock">
+        <div class="dock-container">
+            <div class="dock-item" data-app="spotlight" title="Spotlight">🔍</div>
+            <div class="dock-item" data-app="file-explorer" title="Finder">📁</div>
+            <div class="dock-item" data-app="browser" title="Browser">🌐</div>
+            <div class="dock-item" data-app="email" title="Mail">✉️</div>
+            <div class="dock-item" data-app="calendar" title="Calendar">📅</div>
+            <div class="dock-item" data-app="notes" title="Notes">📝</div>
+            <div class="dock-item" data-app="music" title="Music">🎵</div>
+            <div class="dock-item" data-app="photos" title="Photos">📷</div>
+            <div class="dock-item" data-app="sandbox-manager" title="Sandboxes">🔒</div>
+            <div class="dock-item" data-app="app-store" title="App Store">🏪</div>
+            <div class="dock-item" data-app="time-machine" title="Time Machine">⏰</div>
+            <div class="dock-item" data-app="voice-assistant" title="Voice Assistant">🎤</div>
+            <div class="dock-item" data-app="settings" title="Settings">⚙️</div>
+            <div class="dock-item" data-app="terminal" title="Terminal">💻</div>
+            <div class="dock-item" data-app="activity-monitor" title="Activity Monitor">📊</div>
+            <div class="dock-separator"></div>
+            <div class="dock-item" data-app="trash" title="Trash">🗑️</div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notifications-container"></div>
+
+    <!-- Spotlight Overlay -->
+    <div id="spotlight-overlay" class="spotlight-overlay hidden">
+        <div class="spotlight-container">
+            <input type="text" id="spotlight-search" class="spotlight-search" placeholder="Spotlight Search">
+            <div id="spotlight-results" class="spotlight-results"></div>
+        </div>
+    </div>
+
+    <!-- Launchpad Overlay -->
+    <div id="launchpad-overlay" class="launchpad-overlay hidden">
+        <div class="launchpad-grid" id="launchpad-grid"></div>
+    </div>
+
+    <!-- Mission Control Overlay -->
+    <div id="mission-control-overlay" class="mission-control-overlay hidden">
+        <div class="mission-control-container">
+            <div class="mc-header">Mission Control</div>
+            <div class="mc-desktops" id="mc-desktops"></div>
+            <div class="mc-windows" id="mc-windows"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/window-manager.js"></script>
+    <script src="js/sandbox-manager.js"></script>
+    <script src="js/apps/file-explorer.js"></script>
+    <script src="js/apps/text-editor.js"></script>
+    <script src="js/apps/calculator.js"></script>
+    <script src="js/apps/browser.js"></script>
+    <script src="js/apps/terminal.js"></script>
+    <script src="js/apps/music-player.js"></script>
+    <script src="js/apps/video-player.js"></script>
+    <script src="js/apps/photo-viewer.js"></script>
+    <script src="js/apps/email-client.js"></script>
+    <script src="js/apps/calendar.js"></script>
+    <script src="js/apps/notes.js"></script>
+    <script src="js/apps/activity-monitor.js"></script>
+    <script src="js/apps/settings.js"></script>
+    <script src="js/apps/app-store.js"></script>
+    <script src="js/apps/time-machine.js"></script>
+    <script src="js/apps/voice-assistant.js"></script>
+    <script src="js/mac-features.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
