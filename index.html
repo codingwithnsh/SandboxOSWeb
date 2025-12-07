@@ -10,27 +10,27 @@
 </head>
 <body>
     <!-- Menu Bar -->
-    <div id="menu-bar" class="menu-bar">
+    <div id="menu-bar" class="menu-bar" role="menubar" aria-label="Main menu">
         <div class="menu-items">
-            <div class="menu-item" data-menu="os">SandboxOS</div>
-            <div class="menu-item" data-menu="file">File</div>
-            <div class="menu-item" data-menu="edit">Edit</div>
-            <div class="menu-item" data-menu="view">View</div>
-            <div class="menu-item" data-menu="go">Go</div>
-            <div class="menu-item" data-menu="window">Window</div>
-            <div class="menu-item" data-menu="tools">Tools</div>
+            <div class="menu-item" data-menu="os" role="menuitem" tabindex="0" aria-label="SandboxOS menu">SandboxOS</div>
+            <div class="menu-item" data-menu="file" role="menuitem" tabindex="0" aria-label="File menu">File</div>
+            <div class="menu-item" data-menu="edit" role="menuitem" tabindex="0" aria-label="Edit menu">Edit</div>
+            <div class="menu-item" data-menu="view" role="menuitem" tabindex="0" aria-label="View menu">View</div>
+            <div class="menu-item" data-menu="go" role="menuitem" tabindex="0" aria-label="Go menu">Go</div>
+            <div class="menu-item" data-menu="window" role="menuitem" tabindex="0" aria-label="Window menu">Window</div>
+            <div class="menu-item" data-menu="tools" role="menuitem" tabindex="0" aria-label="Tools menu">Tools</div>
         </div>
         <div class="menu-right">
-            <span id="menu-time" class="menu-time"></span>
-            <span id="menu-battery" class="menu-battery">🔋 100%</span>
-            <span id="menu-network" class="menu-network">🌐</span>
+            <span id="menu-time" class="menu-time" aria-label="Current time"></span>
+            <span id="menu-battery" class="menu-battery" aria-label="Battery status">🔋 100%</span>
+            <span id="menu-network" class="menu-network" aria-label="Network status">🌐</span>
         </div>
     </div>
 
     <!-- Desktop Area -->
-    <div id="desktop" class="desktop">
+    <div id="desktop" class="desktop" role="main" aria-label="Desktop">
         <!-- Desktop Icons -->
-        <div id="desktop-icons" class="desktop-icons">
+        <div id="desktop-icons" class="desktop-icons" role="group" aria-label="Desktop applications">
             <div class="desktop-icon" data-app="file-explorer">
                 <div class="icon">📁</div>
                 <div class="label">Files</div>
@@ -111,7 +111,7 @@
     </div>
 
     <!-- Dock -->
-    <div id="dock" class="dock">
+    <div id="dock" class="dock" role="toolbar" aria-label="Application dock">
         <div class="dock-container">
             <div class="dock-item" data-app="spotlight" title="Spotlight">🔍</div>
             <div class="dock-item" data-app="file-explorer" title="Finder">📁</div>
