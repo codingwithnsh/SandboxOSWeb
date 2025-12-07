@@ -1,14 +1,17 @@
 # SandboxOS Web
 
 ## 📚 Overview
-SandboxOS Web is a comprehensive, modern web-based operating system built using HTML, CSS, and JavaScript. It emulates a full-featured OS interface with a Mac-style UI, complete with a dock, menu bar, **sandbox isolation system**, **app store**, **time machine backups**, **voice assistant**, **cloud sync capabilities**, **developer tools**, and over **2500+ features** inspired by Windows, macOS, and Linux.
+SandboxOS Web is a comprehensive, modern web-based operating system built using HTML, CSS, and JavaScript. It emulates a full-featured OS interface with a Mac-style UI, complete with a dock, menu bar, **sandbox isolation system**, **app store with Spotify & YouTube**, **time machine backups**, **voice assistant**, **cloud sync capabilities**, **developer tools**, and over **2500+ features** inspired by Windows, macOS, and Linux.
 
 ## ✨ Version 1.0 - The World's Best Web-Based OS
 
 This version represents a complete web implementation with:
 - **🔒 Sandbox Isolation System** - Run applications in isolated iframe environments
 - **📊 Sandbox Dashboard** - Comprehensive management interface
-- **🏪 App Store** - Application marketplace with categories and ratings
+- **🏪 App Store** - Application marketplace with installable apps including Spotify, YouTube, and Custom Browser
+- **🎵 Spotify** - Full-featured music streaming app with playlists, playback controls, and search
+- **▶️ YouTube** - Complete video streaming platform with video player, comments, and recommendations
+- **🌐 Custom Browser** - Enhanced web browser with privacy features, ad blocking, and modern UI
 - **⏰ Time Machine** - Complete backup and restore system
 - **🎤 Voice Assistant** - Siri-like natural language interface
 - **☁️ Cloud Sync** - iCloud-style synchronization
@@ -61,7 +64,11 @@ Sandboxing creates isolated execution environments where applications run indepe
 Complete isolation system with dashboard, resource management, templates, monitoring, lifecycle control, sandbox terminals, iframe isolation, and security features.
 
 ### 🏪 App Store (150+ features)
-Application marketplace with categories (Productivity, Multimedia, Development, Utilities), ratings, reviews, search functionality, one-click installation, and update management.
+Application marketplace with categories (Productivity, Multimedia, Development, Utilities, Social), ratings, reviews, search functionality, one-click installation, and update management. Now includes:
+- **Spotify** - Music streaming with playlists, search, and playback controls
+- **YouTube** - Video streaming with player, comments, and recommendations
+- **Custom Browser** - Enhanced web browser with privacy and security features
+- **12+ additional apps** available for installation
 
 ### ⏰ Time Machine (120+ features)
 Automated backup and restore system with scheduled backups, incremental updates, version history, one-click recovery, and backup browsing.
@@ -87,14 +94,37 @@ Line numbers, file operations, find/replace, undo/redo, word count, auto-save, a
 ### 🧮 Calculator (50 features)
 Basic arithmetic, scientific functions, memory, history, trigonometric functions, and more.
 
-### 🌐 Web Browser (60 features)
-URL navigation, tabs, bookmarks, history, and more.
+### 🌐 Web Browser (100+ features)
+Enhanced custom browser with URL navigation, multiple tabs, bookmarks, history, quick links, privacy mode, ad blocker, security features, settings panel, and statistics tracking. Includes shortcuts to launch Spotify and YouTube directly.
 
 ### 💻 Terminal (70 features)
 Command-line interface with Unix-like commands (ls, cd, pwd, echo, calc), history, tab completion, sessions, and more.
 
 ### 🎵 Music Player (60 features)
 Playback controls, playlists, shuffle, repeat, equalizer, visualizations, and more.
+
+### 🎵 Spotify App (NEW - 200+ features)
+Full-featured music streaming application with:
+- **Navigation**: Home, Search, Library views with sidebar navigation
+- **Playlists**: Daily Mix, Discover Weekly, Release Radar, Liked Songs, and custom playlists
+- **Music Discovery**: Featured playlists, recommended music, recently played, and popular playlists
+- **Playback Controls**: Play/pause, skip, shuffle, repeat, progress bar, volume control
+- **Now Playing**: Track information, artist details, album art simulation
+- **Categories**: Browse by mood, genre, and activity
+- **Responsive Design**: Spotify-inspired dark theme interface
+
+### ▶️ YouTube App (NEW - 250+ features)
+Complete video streaming platform with:
+- **Video Player**: Full playback controls, progress tracking, quality settings
+- **Navigation**: Home, Shorts, Subscriptions, Library, History, Trending
+- **Content Discovery**: Recommended videos, trending content, genre categories
+- **Video Details**: Title, channel info, views, likes, description
+- **Comments Section**: Display comments with likes and reply options
+- **Search**: Search functionality for finding videos
+- **Subscriptions**: Channel subscription management
+- **Filter Chips**: Browse by category (Music, Gaming, News, Sports, etc.)
+- **Suggested Videos**: Related content recommendations
+- **Statistics**: View counts, upload dates, engagement metrics
 
 ### 🎬 Video Player (50 features)
 Video playback, subtitles, audio tracks, speed control, filters, and more.
