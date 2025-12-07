@@ -1,0 +1,548 @@
+/* Application-specific styles */
+
+/* File Explorer */
+.file-explorer-toolbar {
+    padding: 10px;
+    background: var(--secondary-light);
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+body.dark-mode .file-explorer-toolbar {
+    background: var(--secondary-dark);
+    border-bottom-color: #444;
+}
+
+.file-explorer-main {
+    display: flex;
+    height: calc(100% - 50px);
+}
+
+.file-explorer-sidebar {
+    width: 200px;
+    background: var(--secondary-light);
+    border-right: 1px solid #ddd;
+    padding: 10px;
+}
+
+body.dark-mode .file-explorer-sidebar {
+    background: var(--secondary-dark);
+    border-right-color: #444;
+}
+
+.file-list {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.file-item {
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+}
+
+.file-item:hover {
+    background: var(--hover-light);
+}
+
+body.dark-mode .file-item:hover {
+    background: var(--hover-dark);
+}
+
+.file-icon {
+    font-size: 24px;
+}
+
+/* Text Editor */
+.text-editor-toolbar {
+    padding: 10px;
+    background: var(--secondary-light);
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    gap: 8px;
+}
+
+body.dark-mode .text-editor-toolbar {
+    background: var(--secondary-dark);
+    border-bottom-color: #444;
+}
+
+.text-editor-content {
+    display: flex;
+    height: calc(100% - 80px);
+}
+
+.text-editor-line-numbers {
+    width: 50px;
+    background: var(--secondary-light);
+    padding: 10px 5px;
+    text-align: right;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    border-right: 1px solid #ddd;
+    user-select: none;
+}
+
+body.dark-mode .text-editor-line-numbers {
+    background: var(--secondary-dark);
+    border-right-color: #444;
+}
+
+.text-editor-textarea {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    resize: none;
+    background: var(--bg-light);
+    color: var(--text-light);
+}
+
+body.dark-mode .text-editor-textarea {
+    background: var(--bg-dark);
+    color: var(--text-dark);
+}
+
+.text-editor-status {
+    padding: 8px 12px;
+    background: var(--secondary-light);
+    border-top: 1px solid #ddd;
+    font-size: 12px;
+}
+
+body.dark-mode .text-editor-status {
+    background: var(--secondary-dark);
+    border-top-color: #444;
+}
+
+/* Calculator */
+.calculator-display {
+    padding: 20px;
+    text-align: right;
+    font-size: 32px;
+    background: var(--secondary-light);
+    border-bottom: 2px solid #ddd;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+body.dark-mode .calculator-display {
+    background: var(--secondary-dark);
+    border-bottom-color: #444;
+}
+
+.calculator-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: #ddd;
+    padding: 1px;
+}
+
+body.dark-mode .calculator-buttons {
+    background: #444;
+}
+
+.calculator-button {
+    padding: 20px;
+    background: var(--secondary-light);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+body.dark-mode .calculator-button {
+    background: var(--secondary-dark);
+    color: var(--text-dark);
+}
+
+.calculator-button:hover {
+    background: var(--hover-light);
+}
+
+body.dark-mode .calculator-button:hover {
+    background: var(--hover-dark);
+}
+
+.calculator-button.operator {
+    background: var(--accent-color);
+    color: white;
+}
+
+/* Terminal */
+.terminal-output {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    background: #000;
+    color: #0F0;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: #000;
+    border-top: 1px solid #333;
+}
+
+.terminal-prompt {
+    color: #0F0;
+    font-family: 'Courier New', monospace;
+    margin-right: 8px;
+}
+
+.terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #0F0;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+}
+
+/* Email Client */
+.email-layout {
+    display: flex;
+    height: 100%;
+}
+
+.email-sidebar {
+    width: 200px;
+    background: var(--secondary-light);
+    border-right: 1px solid #ddd;
+    padding: 10px;
+}
+
+body.dark-mode .email-sidebar {
+    background: var(--secondary-dark);
+    border-right-color: #444;
+}
+
+.email-list {
+    width: 300px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+body.dark-mode .email-list {
+    border-right-color: #444;
+}
+
+.email-item {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+body.dark-mode .email-item {
+    border-bottom-color: #444;
+}
+
+.email-item:hover {
+    background: var(--hover-light);
+}
+
+body.dark-mode .email-item:hover {
+    background: var(--hover-dark);
+}
+
+.email-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Calendar */
+.calendar-header {
+    padding: 15px;
+    text-align: center;
+    background: var(--secondary-light);
+    border-bottom: 1px solid #ddd;
+}
+
+body.dark-mode .calendar-header {
+    background: var(--secondary-dark);
+    border-bottom-color: #444;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: #ddd;
+    padding: 1px;
+}
+
+body.dark-mode .calendar-grid {
+    background: #444;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    background: var(--secondary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+body.dark-mode .calendar-day {
+    background: var(--secondary-dark);
+}
+
+.calendar-day:hover {
+    background: var(--hover-light);
+}
+
+body.dark-mode .calendar-day:hover {
+    background: var(--hover-dark);
+}
+
+.calendar-day.today {
+    background: var(--accent-color);
+    color: white;
+}
+
+/* Music Player */
+.music-player-cover {
+    height: 300px;
+    background: var(--secondary-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 120px;
+}
+
+body.dark-mode .music-player-cover {
+    background: var(--secondary-dark);
+}
+
+.music-player-info {
+    padding: 20px;
+    text-align: center;
+}
+
+.music-player-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.music-control-button {
+    font-size: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.music-control-button:hover {
+    transform: scale(1.1);
+}
+
+/* Activity Monitor */
+.activity-tabs {
+    display: flex;
+    background: var(--secondary-light);
+    border-bottom: 1px solid #ddd;
+}
+
+body.dark-mode .activity-tabs {
+    background: var(--secondary-dark);
+    border-bottom-color: #444;
+}
+
+.activity-tab {
+    padding: 12px 24px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+}
+
+.activity-tab.active {
+    border-bottom-color: var(--accent-color);
+}
+
+.activity-content {
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.process-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.process-list th,
+.process-list td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+body.dark-mode .process-list th,
+body.dark-mode .process-list td {
+    border-bottom-color: #444;
+}
+
+.process-list th {
+    background: var(--secondary-light);
+    font-weight: 600;
+}
+
+body.dark-mode .process-list th {
+    background: var(--secondary-dark);
+}
+
+/* Settings */
+.settings-layout {
+    display: flex;
+    height: 100%;
+}
+
+.settings-sidebar {
+    width: 200px;
+    background: var(--secondary-light);
+    border-right: 1px solid #ddd;
+    padding: 10px;
+}
+
+body.dark-mode .settings-sidebar {
+    background: var(--secondary-dark);
+    border-right-color: #444;
+}
+
+.settings-content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.settings-section {
+    margin-bottom: 30px;
+}
+
+.settings-section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.settings-option {
+    margin-bottom: 15px;
+}
+
+.settings-label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* App Store */
+.app-store-header {
+    padding: 20px;
+    background: var(--secondary-light);
+    border-bottom: 1px solid #ddd;
+}
+
+body.dark-mode .app-store-header {
+    background: var(--secondary-dark);
+    border-bottom-color: #444;
+}
+
+.app-store-search {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.app-store-categories {
+    display: flex;
+    gap: 10px;
+    padding: 15px 20px;
+    background: var(--secondary-light);
+    border-bottom: 1px solid #ddd;
+    overflow-x: auto;
+}
+
+body.dark-mode .app-store-categories {
+    background: var(--secondary-dark);
+    border-bottom-color: #444;
+}
+
+.app-store-category {
+    padding: 8px 16px;
+    background: var(--bg-light);
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+body.dark-mode .app-store-category {
+    background: var(--bg-dark);
+}
+
+.app-store-category.active {
+    background: var(--accent-color);
+    color: white;
+}
+
+.app-store-apps {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.app-store-item {
+    padding: 20px;
+    background: var(--secondary-light);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+body.dark-mode .app-store-item {
+    background: var(--secondary-dark);
+}
+
+.app-store-item:hover {
+    transform: translateY(-4px);
+}
+
+.app-store-item-icon {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.app-store-item-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.app-store-item-desc {
+    font-size: 13px;
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
