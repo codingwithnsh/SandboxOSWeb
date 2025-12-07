@@ -227,6 +227,12 @@ function launchApp(appName) {
         case 'trash':
             openTrash();
             break;
+        case 'code-editor':
+            openCodeEditor();
+            break;
+        case 'paint':
+            openPaint();
+            break;
         default:
             showNotification('App', `Opening ${appName}...`);
     }
